@@ -37,7 +37,6 @@ import { z } from "zod"
 
 const pinSchema = z.object({
   title: z.string().trim().min(4),
-  url: z.string().trim().url(),
   description: z.string().trim().min(10),
   boardId: z.string().trim().min(3, {
     message: "select a board",
@@ -61,7 +60,7 @@ const useUpload = () => {
 
 const useCreatePinForm = () => {
   return useForm<TPinForm>({
-    defaultValues: { title: "", description: "", url: "", boardId: "" },
+    defaultValues: { title: "", description: "", boardId: "" },
     resolver: zodResolver(pinSchema),
   })
 }
@@ -107,20 +106,7 @@ export default function NewPin({ boards }: { boards: TBoard[] }) {
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="grid grid-cols-2 items-end gap-4">
             <FormField
               control={form.control}
               name="boardId"
@@ -148,40 +134,40 @@ export default function NewPin({ boards }: { boards: TBoard[] }) {
                 </FormItem>
               )}
             />
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant={"outline"} className="w-full">
+                  <Icons.upload className="mr-1.5 h-4 w-4" />
+                  Upload Image
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Upload Images</DialogTitle>
+                </DialogHeader>
+                <section
+                  {...getRootProps()}
+                  className="flex h-72 w-full flex-col items-center justify-center gap-4 rounded-md border-2 border-dashed p-2 shadow-sm hover:bg-secondary/30"
+                >
+                  {files.length ? (
+                    <PreviewImage file={files[0]} />
+                  ) : (
+                    <>
+                      <div className="flex items-center justify-center rounded-full bg-secondary p-2.5">
+                        <Icons.image className="h-5 w-5" />
+                      </div>
+                      <p className="text-foreground">Upload your image</p>
+                      <div className="grid gap-2 text-center text-sm text-muted-foreground">
+                        <span>High Resolution: (jpg,png,webp)</span>
+                        <span>Max Size: 8MB</span>
+                        <span>Animated gif</span>
+                      </div>
+                    </>
+                  )}
+                </section>
+              </DialogContent>
+            </Dialog>
           </div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant={"outline"} className="w-full">
-                <Icons.upload className="mr-1.5 h-4 w-4" />
-                Upload Image
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Upload Images</DialogTitle>
-              </DialogHeader>
-              <section
-                {...getRootProps()}
-                className="flex h-72 w-full flex-col items-center justify-center gap-4 rounded-md border-2 border-dashed p-2 shadow-sm hover:bg-secondary/30"
-              >
-                {files.length ? (
-                  <PreviewImage file={files[0]} />
-                ) : (
-                  <>
-                    <div className="flex items-center justify-center rounded-full bg-secondary p-2.5">
-                      <Icons.image className="h-5 w-5" />
-                    </div>
-                    <p className="text-foreground">Upload your image</p>
-                    <div className="grid gap-2 text-center text-sm text-muted-foreground">
-                      <span>High Resolution: (jpg,png,webp)</span>
-                      <span>Max Size: 8MB</span>
-                      <span>Animated gif</span>
-                    </div>
-                  </>
-                )}
-              </section>
-            </DialogContent>
-          </Dialog>
           <Button disabled={isLoading} type="submit">
             Add Pin
           </Button>

@@ -18,7 +18,6 @@ export async function updateImages(formData: FormData) {
 
 type PinForm = {
   title: string
-  url: string
   files: File
   boardId: string
   description: string
@@ -27,7 +26,7 @@ type PinForm = {
 // create new pin
 export async function createPin(formData: FormData) {
   const { id: userId } = await getUserSession()
-  const { title, boardId, description, url } = Object.fromEntries(
+  const { title, boardId, description } = Object.fromEntries(
     formData.entries()
   ) as PinForm
   const files = formData.getAll("files")
@@ -36,7 +35,6 @@ export async function createPin(formData: FormData) {
     data: {
       title,
       description,
-      url,
       boardId,
       userId,
       image: {

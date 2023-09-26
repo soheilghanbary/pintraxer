@@ -70,7 +70,6 @@ model Pin {
   id          String @id @unique @default(cuid())
   image       Json
   title       String
-  url         String
   description String
   user        User   @relation(fields: [userId], references: [id])
   userId      String

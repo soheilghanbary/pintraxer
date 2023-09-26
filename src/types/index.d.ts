@@ -27,7 +27,6 @@ type TBoard = {
 type Pin = {
   id: string
   title: string
-  url: string
   boardId: string
   userId: string
   description: string

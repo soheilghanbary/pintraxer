@@ -37,7 +37,6 @@ import { z } from "zod"
 
 const pinSchema = z.object({
   title: z.string().trim().min(4),
-  url: z.string().trim().url(),
   description: z.string().trim().min(10),
   boardId: z.string().trim().min(3, {
     message: "select a board",
@@ -74,7 +73,6 @@ export default function EditPin({
   boards: TBoard[]
 }) {
   const form = useEditPinForm({
-    url: pin.url,
     title: pin.title,
     boardId: pin.boardId,
     description: pin.description,
@@ -119,20 +117,7 @@ export default function EditPin({
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>URL</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="grid grid-cols-2 items-end gap-4">
             <FormField
               control={form.control}
               name="boardId"
@@ -160,43 +145,43 @@ export default function EditPin({
                 </FormItem>
               )}
             />
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant={"outline"} className="w-full">
+                  <Icons.upload className="mr-1.5 h-4 w-4" />
+                  Upload Image
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Upload Images</DialogTitle>
+                </DialogHeader>
+                <section
+                  {...getRootProps()}
+                  className="flex h-72 w-full flex-col items-center justify-center gap-4 rounded-md border-2 border-dashed p-2 shadow-sm hover:bg-secondary/30"
+                >
+                  {files.length ? (
+                    <PreviewImage file={files[0]} />
+                  ) : (
+                    <div className="relative h-full w-full rounded-2xl [&>img]:rounded-[inherit]">
+                      <NextImage
+                        src={pin.image.url}
+                        fill
+                        sizes="100vw"
+                        loading="lazy"
+                        alt={"upload image"}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
+                      />
+                    </div>
+                  )}
+                </section>
+              </DialogContent>
+            </Dialog>
           </div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant={"outline"} className="w-full">
-                <Icons.upload className="mr-1.5 h-4 w-4" />
-                Upload Image
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Upload Images</DialogTitle>
-              </DialogHeader>
-              <section
-                {...getRootProps()}
-                className="flex h-72 w-full flex-col items-center justify-center gap-4 rounded-md border-2 border-dashed p-2 shadow-sm hover:bg-secondary/30"
-              >
-                {files.length ? (
-                  <PreviewImage file={files[0]} />
-                ) : (
-                  <div className="relative h-full w-full rounded-2xl [&>img]:rounded-[inherit]">
-                    <NextImage
-                      src={pin.image.url}
-                      fill
-                      sizes="100vw"
-                      loading="lazy"
-                      alt={"upload image"}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain",
-                      }}
-                    />
-                  </div>
-                )}
-              </section>
-            </DialogContent>
-          </Dialog>
           <Button disabled={isLoading} type="submit">
             Update Pin
           </Button>
