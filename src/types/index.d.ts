@@ -9,14 +9,38 @@ type TUser = {
   email: string
   image: string
   name: string
-  bio?: string
+  username: string
+  about?: string
   website?: string
 }
 
-type Board = {
-  // Define the structure of the Board type here
+type TUserForm = Pick<TUser, "name" | "username" | "website" | "about">
+
+type TBoard = {
+  id: string
+  name: string
+  description: string
+  userId: string
+  pins: Pin[]
 }
 
 type Pin = {
-  // Define the structure of the Pin type here
+  id: string
+  title: string
+  url: string
+  boardId: string
+  userId: string
+  description: string
+  image: {
+    url: string
+    key: string
+    width: string
+    height: string
+  }
+  board: Board
+}
+
+type TNewBoard = {
+  name: string
+  description: string
 }

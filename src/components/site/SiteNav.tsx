@@ -29,7 +29,7 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function SiteNav() {
   return (
-    <nav className="flex-1">
+    <nav className="hidden flex-1 md:block">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>

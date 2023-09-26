@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { irsans } from "@assets/fonts"
 import { QueryProvider } from "@components/providers/QueryProvider"
 import { ThemeProvider } from "@components/providers/theme-provider"
+import { ToastProvider } from "@components/providers/ToastProvider"
 import { SiteLayout } from "@components/site/SiteLayout"
 import { siteConfig } from "@config/site"
 
@@ -45,6 +46,7 @@ export default function RootLayout({
           >
             <SiteLayout>{children}</SiteLayout>
           </ThemeProvider>
+          <ToastProvider />
         </QueryProvider>
       </body>
     </html>
